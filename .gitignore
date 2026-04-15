@@ -1,0 +1,6 @@
+logs
+db/__pycache__
+bot/__pycache__
+bot/commands/__pycache__
+.vscode
+.env
