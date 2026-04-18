@@ -15,7 +15,7 @@ class Logger:
       print(det)
       
     with open(self.file, "a", encoding="utf-8") as f:
-      f.write(det)
+      f.write(det+"\n")
       
   def warn(self, message: str):
     det = f"[!] {datetime.now()} Warning: {message}"
@@ -24,7 +24,7 @@ class Logger:
       print(Fore.YELLOW + det + Style.RESET_ALL)
     
     with open(self.file, "a", encoding="utf-8") as f:
-      f.write(det)
+      f.write(det+"\n")
       
   def error(self, message: str):
     det = f"[x] {datetime.now()} Error: {message}"
@@ -33,4 +33,4 @@ class Logger:
       print(Fore.RED + det + Style.RESET_ALL)
     
     with open(self.file, "a", encoding="utf-8") as f:
-      f.write(det)
+      f.write(det+"\n")

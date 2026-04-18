@@ -2,5 +2,6 @@ logs
 db/__pycache__
 bot/__pycache__
 bot/commands/__pycache__
+web/__pycache__
 .vscode
 .env

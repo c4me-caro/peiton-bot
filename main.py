@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from bot.logs import Logger
 from db.controller import MongoController
 from time import time
+from web.server import run_app
+import asyncio
 
 load_dotenv()
 log = Logger("general.log", 0)
@@ -34,20 +36,34 @@ def load_bot():
       log.log(f"Se ha cargado la extensión {extension}")
     except Exception as e:
       log.warn(str(e))
-    
-if __name__ == "__main__":
+
+async def stop():
+  if hasattr(bot, "db") and hasattr(bot.db, "client"):
+    bot.db.client.close()
+    log.log("Conexión con MongoDB cerrada correctamente.")
+
+  if not bot.is_closed():
+    await bot.close()
+
+async def main():
   load_bot()
+
   try:
-    bot.run(TOKEN)
+    await asyncio.gather(run_app(mongocontroller), bot.start(TOKEN))
   
-  except KeyboardInterrupt:
-    log.log("Interrupción ejecutada desde consola")
+  except:
+    pass
 
   finally:
-    if hasattr(bot, 'db') and hasattr(bot.db, 'client'):
-      bot.db.client.close()
-      log.log("Conexión con MongoDB cerrada correctamente.")
+    await stop()
+
+if __name__ == "__main__":
+  try:
+    asyncio.run(main())
   
-    if not bot.is_closed():
-      import asyncio
-      asyncio.run(bot.close())
+  except KeyboardInterrupt:
+    log.log("Interrupción de teclado generada.")
+
+  except Exception as e:
+    log.error(str(e))
+  

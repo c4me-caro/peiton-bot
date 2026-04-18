@@ -7,7 +7,7 @@ log = Logger("admin.log", 3)
 
 def is_admin():
   async def predicate(ctx):
-    actual_cog = ctx.bot.get_cog('Moderator')
+    actual_cog = ctx.bot.get_cog("Moderator")
     if not actual_cog:
       return False
     
@@ -38,7 +38,7 @@ class Moderator(commands.Cog):
         log.log("No se ha configurado un rol de administración del bot.")
         return []
       
-      return docs[0]['admin_role']
+      return docs[0]["admin_role"]
           
     @slash_command(name="embed", description="Genera un embed con los datos requeridos")
     @is_admin()
@@ -50,7 +50,7 @@ class Moderator(commands.Cog):
           return
         
         doc = docs[0]
-        doc.pop('_id', None)
+        doc.pop("_id", None)
         data = MongoGuild(**doc)
 
         embed = Embed(

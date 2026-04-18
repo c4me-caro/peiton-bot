@@ -11,7 +11,7 @@ load_dotenv()
 
 def is_admin():
   async def predicate(ctx):
-    actual_cog = ctx.bot.get_cog('Gestion')
+    actual_cog = ctx.bot.get_cog("Gestion")
     if not actual_cog:
       return False
     
@@ -42,7 +42,7 @@ class Gestion(commands.Cog):
       log.log("No se ha configurado un rol de administración del bot.")
       return []
     
-    return docs[0]['admin_role']
+    return docs[0]["admin_role"]
       
   @commands.command(name="sync", help="Sincroniza los comandos del bot")
   async def sync(self, ctx):
