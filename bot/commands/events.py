@@ -20,7 +20,8 @@ class Events(commands.Cog, name="EventsCog"):
       id=guild.id,
       name=guild.name,
       icon=guild.icon.url if guild.icon != None else "",
-      admin_role="admin"
+      admin_role="admin",
+      color=guild.owner.color if guild.owner != None else 0
     )
 
     _ = await self.bot.db.add_document("servers", doc.to_dict())

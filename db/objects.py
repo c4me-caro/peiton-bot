@@ -7,6 +7,7 @@ class MongoGuild:
   name: str = ""
   icon: Optional[str] = None
   admin_role: str = "admin"
+  color: int = 0
 
   def to_dict(self):
     return asdict(self)

@@ -42,11 +42,7 @@ class Gestion(commands.Cog):
       log.log("No se ha configurado un rol de administración del bot.")
       return []
     
-    return_docs = []
-    for i in docs:
-      return_docs.append(i["admin_role"])
-
-    return return_docs
+    return docs[0]['admin_role']
       
   @commands.command(name="sync", help="Sincroniza los comandos del bot")
   async def sync(self, ctx):
