@@ -22,7 +22,8 @@ bot = commands.Bot(
   activity=discord.Game(name=f"type {PREFIX}help"), 
   status=discord.Status.online, 
   owner_id=os.getenv("DISCORD_OWNER"),   
-  intents=discord.Intents.all()
+  intents=discord.Intents.all(),
+  help_command=None
 )
 
 mongocontroller = MongoController(os.getenv("MONGO_URI"), "discord")

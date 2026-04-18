@@ -6,21 +6,29 @@ log = Logger("database.log", 3)
 
 class MongoController:
   def __init__(self, uri, db_name):
+    self.uri = uri
+    self.db_name = db_name
+
+  async def intialize_db(self):
     try:
-      self.client = AsyncIOMotorClient(uri)
+      self.client = AsyncIOMotorClient(self.uri)
       self.client.admin.command("ping")
-      self.db = self.client[db_name]
+      self.db = self.client[self.db_name]
 
       log.log("Conexión establecida con la base de datos")
-
+      return True
+      
     except ConnectionFailure:
       log.error("Ha fallado la conexión con la base de datos")
-
+      return False
+    
     except ServerSelectionTimeoutError:
       log.error("Ha fallado la conexión. El servidor no esta disponible")
-
+      return False
+    
     except Exception as e:
       log.error(str(e))
+      return False
 
   async def add_document(self, collection: str, data: dict):
     try:

@@ -67,7 +67,7 @@ class Gestion(commands.Cog):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
       self.bot.load_extension(f"bot.commands.{extension}")
       log.log(f"{ctx.author.display_name} ha cargado la extensión {extension}")
-      await ctx.respond("La extensión ha sido añadida a las capacidades del bot.")
+      await ctx.respond(f"La extensión {extension} ha sido añadida a las capacidades del bot.")
     else:
       await ctx.respond("Me temo que no posees las llaves de esta habitación.")
 
@@ -77,7 +77,7 @@ class Gestion(commands.Cog):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
       self.bot.unload_extension(f"bot.commands.{extension}")
       log.log(f"{ctx.author.display_name} ha eliminado la extensión {extension}")
-      await ctx.respond("La extensión ha sido eliminada a las capacidades del bot.")
+      await ctx.respond(f"La extensión {extension} ha sido eliminada a las capacidades del bot.")
     else:
       await ctx.respond("Me temo que no posees las llaves de esta habitación.")
 
@@ -87,7 +87,7 @@ class Gestion(commands.Cog):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
       self.bot.reload_extension(f"bot.commands.{extension}")
       log.log(f"{ctx.author.display_name} ha recargado la extensión {extension}")
-      await ctx.respond("La extensión ha sido recargada correctamente.")
+      await ctx.respond(f"La extensión {extension} ha sido recargada correctamente.")
     else:
       await ctx.respond("Me temo que no posees las llaves de esta habitación.")
 

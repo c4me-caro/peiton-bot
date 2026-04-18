@@ -12,7 +12,8 @@ class Events(commands.Cog, name="EventsCog"):
 
   @commands.Cog.listener()
   async def on_ready(self):
-    log.log("Bot Online!")
+    res = await self.bot.db.intialize_db()
+    log.log("Bot Online!") if res else log.error("Base de datos no inicializada.")
 
   @commands.Cog.listener()
   async def on_guild_join(self, guild):
@@ -56,6 +57,16 @@ class Events(commands.Cog, name="EventsCog"):
     log.log(f"{member.name} se ha unido al servidor {member.guild.name}")
     await channel.send(embed=embed)
   
+  @commands.Cog.listener()
+  async def on_command_error(self, ctx, exception):
+    log.warn(exception)
+    msg = "Parece que ha habido un error. Por favor revisa tu comando e intenta nuevamente."
+
+    if type(exception) == commands.errors.CommandNotFound:
+      msg = "Me temo que esta función no se encuentra en mi sistema."
+
+    await ctx.send(msg)
+
   @commands.Cog.listener()
   async def on_application_command_error(self, ctx, exception):
     log.warn(exception)
