@@ -5,7 +5,9 @@ from bot.logs import Logger
 import discord
 from time import time
 from datetime import timedelta
+from bot.dialogs import Dialogs
 
+diag = Dialogs()
 log = Logger("botmanage.log", 3)
 load_dotenv()
 
@@ -22,7 +24,7 @@ def is_admin():
     if any(role.name in roles for role in ctx.author.roles):
       return True
     
-    msg = "Me temo que no posees las llaves de esta habitación."
+    msg = diag.err("NotPermitted")
     if hasattr(ctx, "respond"):
       await ctx.respond(msg, ephemeral=True)
     else:
@@ -39,7 +41,7 @@ class Gestion(commands.Cog):
   async def get_admin_roles(self, guild_id):
     docs = await self.bot.db.get_document("servers", {"id":guild_id})
     if len(docs) == 0:
-      log.log("No se ha configurado un rol de administración del bot.")
+      log.warn("No se ha configurado un rol de administración del bot.")
       return []
     
     return docs[0]["admin_role"]
@@ -49,17 +51,17 @@ class Gestion(commands.Cog):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
       log.log(f"{ctx.author.name} ha sincronizado los comandos")
       await self.bot.sync_commands()
-      await ctx.send("Se han sincronizado todos los comandos.")
+      await ctx.send(diag.msg("CommandsSync"))
     else:
-      await ctx.send("Me temo que no posees las llaves de esta habitación.")
+      await ctx.send(diag.err("NotPermitted"))
 
   @commands.command(name="uptime", help="Muestra el tiempo de actividad del bot")
   async def uptime(self, ctx):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
       uptime = timedelta(seconds=int(round(time() - self.bot.uptime)))
-      await ctx.send(f"El bot ha estado activo por {uptime}.")
+      await ctx.send(diag.msg("uptime").format(uptime))
     else:
-      await ctx.send("Me temo que no posees las llaves de esta habitación.")
+      await ctx.send(diag.err("NotPermitted"))
 
   @discord.slash_command(name="load", description="Carga una extensión del bot por nombre corto")
   @is_admin()
@@ -67,9 +69,9 @@ class Gestion(commands.Cog):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
       self.bot.load_extension(f"bot.commands.{extension}")
       log.log(f"{ctx.author.display_name} ha cargado la extensión {extension}")
-      await ctx.respond(f"La extensión {extension} ha sido añadida a las capacidades del bot.")
+      await ctx.respond(diag.msg("LoadExtension").format(extension))
     else:
-      await ctx.respond("Me temo que no posees las llaves de esta habitación.")
+      await ctx.respond(diag.err("NotPermitted"))
 
   @discord.slash_command(name="unload", description="Inhabilita una extensión del bot por nombre corto")
   @is_admin()
@@ -77,9 +79,9 @@ class Gestion(commands.Cog):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
       self.bot.unload_extension(f"bot.commands.{extension}")
       log.log(f"{ctx.author.display_name} ha eliminado la extensión {extension}")
-      await ctx.respond(f"La extensión {extension} ha sido eliminada a las capacidades del bot.")
+      await ctx.respond(diag.msg("UnloadExtension").format(extension))
     else:
-      await ctx.respond("Me temo que no posees las llaves de esta habitación.")
+      await ctx.respond(diag.err("NotPermitted"))
 
   @discord.slash_command(name="reload", description="Recarga una extensión del bot por nombre corto")
   @is_admin()
@@ -87,9 +89,9 @@ class Gestion(commands.Cog):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
       self.bot.reload_extension(f"bot.commands.{extension}")
       log.log(f"{ctx.author.display_name} ha recargado la extensión {extension}")
-      await ctx.respond(f"La extensión {extension} ha sido recargada correctamente.")
+      await ctx.respond(diag.msg("ReloadExtension").format(extension))
     else:
-      await ctx.respond("Me temo que no posees las llaves de esta habitación.")
+      await ctx.respond(diag.err("NotPermitted"))
 
   @discord.slash_command(name="ping", description="Comprueba la latencia del bot.")
   @is_admin()
@@ -101,7 +103,7 @@ class Gestion(commands.Cog):
   async def limpiar(self, ctx, cantidad: int=1000):
     log.log(f"{ctx.author.display_name} ha limpiado {cantidad} mensajes del canal {ctx.channel}")
     await ctx.channel.purge(limit=cantidad)
-    await ctx.respond(f"Se ha borrado todo el historial del canal. (hasta {cantidad} mensajes).", ephemeral=True)
+    await ctx.respond(diag.msg("clean").format(cantidad), ephemeral=True)
 
 def setup(bot):
   bot.add_cog(Gestion(bot))

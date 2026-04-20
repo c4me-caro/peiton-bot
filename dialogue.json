@@ -1,0 +1,19 @@
+{
+  "commands": {
+    "welcome": "@{} Se ha unido al servidor!",
+    "CommandsSync": "Se han sincronizado todos los comandos.",
+    "uptime": "El bot ha estado activo por {}.",
+    "LoadExtension": "La extensión {} ha sido añadida a las capacidades del bot.",
+    "UnloadExtension": "La extensión {} ha sido eliminada a las capacidades del bot.",
+    "ReloadExtension": "La extensión {} ha sido recargada correctamente.",
+    "clean": "Se ha borrado todo el historial del canal. (hasta {} mensajes)."
+  },
+  "prompts": {
+  },
+  "errors": {
+    "CommandError": "Parece que ha habido un error. Por favor revisa tu comando e intenta nuevamente.",
+    "CommandNotFound": "Me temo que esta función no se encuentra en mi sistema.",
+    "NotPermitted": "Me temo que no posees las llaves de esta habitación.",
+    "SystemError": "Parece que algo ha fallado. Por favor comunica el error a un administrador."
+  }
+}

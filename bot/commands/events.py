@@ -3,8 +3,10 @@ from bot.logs import Logger
 from db.objects import MongoGuild, MongoWelcome
 from discord import Embed
 from discord.errors import CheckFailure
+from bot.dialogs import Dialogs
 
 log = Logger("events.log", 3)
+diag = Dialogs()
 
 class Events(commands.Cog, name="EventsCog"):
   def __init__(self, bot):
@@ -31,7 +33,7 @@ class Events(commands.Cog, name="EventsCog"):
   async def on_member_join(self, member):
     docs = await self.bot.db.get_document("welcome", {"guild_id":member.guild.id})
     if len(docs) == 0:
-      log.log("No se ha configurado un canal de bienvenida")
+      log.warn("No se ha configurado un canal de bienvenida")
       return
     
     doc = docs[0]
@@ -39,7 +41,7 @@ class Events(commands.Cog, name="EventsCog"):
     data = MongoWelcome(**doc)
 
     embed = Embed(
-      title="@{} Se ha unido al servidor!".format(member.display_name),
+      title=diag.msg("welcome").format(member.display_name),
       description=data.description
     )
 
@@ -60,10 +62,10 @@ class Events(commands.Cog, name="EventsCog"):
   @commands.Cog.listener()
   async def on_command_error(self, ctx, exception):
     log.warn(exception)
-    msg = "Parece que ha habido un error. Por favor revisa tu comando e intenta nuevamente."
+    msg = diag.err("CommandError")
 
     if type(exception) == commands.errors.CommandNotFound:
-      msg = "Me temo que esta función no se encuentra en mi sistema."
+      msg = diag.err("CommandNotFound")
 
     await ctx.send(msg)
 
@@ -73,7 +75,7 @@ class Events(commands.Cog, name="EventsCog"):
     if type(exception) == CheckFailure:
       return
     
-    await ctx.respond("Parece que ha habido un error. Por favor revisa tu comando e intenta nuevamente.")
+    await ctx.respond(diag.err("CommandError"))
 
 def setup(bot):
   bot.add_cog(Events(bot))

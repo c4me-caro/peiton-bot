@@ -14,14 +14,14 @@ log = Logger("general.log", 0)
 TOKEN = str(os.getenv("DISCORD_TOKEN"))
 PREFIX = "pe/"
 
-extensions = ["events", "gestion"]
+extensions = ["events", "gestion", "moderator"]
 
 bot = commands.Bot(
   command_prefix=PREFIX, 
-  description="bip, bop! A savage Peiton  bot learning to be a smart helper.",
+  description="bip, bop! A savage Peiton bot learning to be a smart helper.",
   activity=discord.Game(name=f"type {PREFIX}help"), 
   status=discord.Status.online, 
-  owner_id=os.getenv("DISCORD_OWNER"),   
+  owner_id=os.getenv("DISCORD_OWNER"),
   intents=discord.Intents.all(),
   help_command=None
 )
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     asyncio.run(main())
   
   except KeyboardInterrupt:
-    log.log("Interrupción de teclado generada.")
+    log.warn("Interrupción de teclado generada.")
 
   except Exception as e:
     log.error(str(e))
