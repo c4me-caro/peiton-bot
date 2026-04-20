@@ -9,6 +9,7 @@ COPY bot/ ./bot/
 COPY db/ ./db/
 
 COPY main.py .
+COPY dialogue.json .
 
 RUN mkdir log
 
