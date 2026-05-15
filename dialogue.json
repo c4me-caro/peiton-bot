@@ -6,14 +6,17 @@
     "LoadExtension": "La extensión {} ha sido añadida a las capacidades del bot.",
     "UnloadExtension": "La extensión {} ha sido eliminada a las capacidades del bot.",
     "ReloadExtension": "La extensión {} ha sido recargada correctamente.",
-    "clean": "Se ha borrado todo el historial del canal. (hasta {} mensajes)."
+    "clean": "Se ha borrado todo el historial del canal. (hasta {} mensajes).",
+    "avatar": "Avatar de @{}"
   },
   "prompts": {
+    "botMention": "Hola, necesitas algo? Puedes usar `{}help` para obtener ayuda."
   },
   "errors": {
     "CommandError": "Parece que ha habido un error. Por favor revisa tu comando e intenta nuevamente.",
     "CommandNotFound": "Me temo que esta función no se encuentra en mi sistema.",
     "NotPermitted": "Me temo que no posees las llaves de esta habitación.",
-    "SystemError": "Parece que algo ha fallado. Por favor comunica el error a un administrador."
+    "SystemError": "Parece que algo ha fallado. Por favor comunica el error a un administrador.",
+    "UserAvatar": "Me temo que el usuario seleccionado no posee un avatar que descargar."
   }
 }

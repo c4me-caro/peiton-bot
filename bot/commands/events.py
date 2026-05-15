@@ -18,6 +18,15 @@ class Events(commands.Cog, name="EventsCog"):
     log.log("Bot Online!") if res else log.error("Base de datos no inicializada.")
 
   @commands.Cog.listener()
+  async def on_message(self, message):
+    if message.author.bot:
+      return
+
+    if self.bot.user in message.mentions and not message.content.startswith(self.bot.command_prefix):
+      await message.channel.send(diag.hlp("botMention").format(self.bot.command_prefix))
+      return    
+
+  @commands.Cog.listener()
   async def on_guild_join(self, guild):
     doc = MongoGuild(
       id=guild.id,
