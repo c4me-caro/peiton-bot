@@ -1,11 +1,10 @@
 from dataclasses import dataclass,asdict
-from typing import Optional
 
 @dataclass
 class MongoGuild:
   id: int = 0
   name: str = ""
-  icon: Optional[str] = None
+  icon: str = ""
   admin_role: str = "admin"
   color: int = 0
   auth_key: str = ""
@@ -18,16 +17,18 @@ class MongoWelcome:
   guild_id: int = 0
   description: str = ""
   image_url: str = ""
-  channel: str = ""
-  color: int = 0
+  channel: int = 0
 
   def to_dict(self):
     return asdict(self)
 
 @dataclass
 class MongoAlerts:
-  id: int = 0
+  id: str = ""
   guild_id: int = 0
   title: str = ""
-  channel: str = ""
+  channel: int = 0
   image_url: str = ""
+
+  def to_dict(self):
+    return asdict(self)

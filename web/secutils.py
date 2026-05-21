@@ -2,9 +2,13 @@ import secrets
 from db.objects import MongoAlerts, MongoGuild
 from fastapi import status, HTTPException
 import discord
+import uuid
 
 def generate_token():
   return secrets.token_urlsafe(32)
+
+def generate_alert_id():
+  return str(uuid.uuid4()).replace("-", "")
 
 async def get_token_guild(db, token):
   docs = await db.get_document("servers", {"auth_key": token})
@@ -38,7 +42,7 @@ async def retrieve_alert(channel, guild_name, guild_color, guild_icon, alert_tit
 
   await channel.send(embed=embed)
 
-async def manage_alert(app, token, id, message):
+async def manage_alert(app, logger, token, id, message):
   guild = await get_token_guild(app.db, token)
   if guild == None:
     raise HTTPException(
@@ -61,3 +65,14 @@ async def manage_alert(app, token, id, message):
     )
 
   await retrieve_alert(channel, guild.name, guild.color, guild.icon, alert.title, alert.image_url, message)
+  logger.log(f"Alerta generada en el servidor {guild.name}: {alert.id}")
+
+async def validate_token(db, token, guild_id):
+  guild = await get_token_guild(db, token)
+  if guild == None:
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail="Servidor no encontrado"
+    )
+
+  return guild.id == guild_id
