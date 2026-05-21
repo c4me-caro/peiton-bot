@@ -4,6 +4,7 @@ from db.objects import MongoGuild, MongoWelcome
 from discord import Embed
 from discord.errors import CheckFailure
 from bot.dialogs import Dialogs
+from web.secutils import generate_token
 
 log = Logger("events.log", 3)
 diag = Dialogs()
@@ -28,12 +29,15 @@ class Events(commands.Cog, name="EventsCog"):
 
   @commands.Cog.listener()
   async def on_guild_join(self, guild):
+    key = generate_token()
+
     doc = MongoGuild(
       id=guild.id,
       name=guild.name,
       icon=guild.icon.url if guild.icon != None else "",
       admin_role="admin",
-      color=guild.owner.color if guild.owner != None else 0
+      color=guild.owner.color.value if guild.owner != None else 0,
+      auth_key=key
     )
 
     _ = await self.bot.db.add_document("servers", doc.to_dict())

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Header, status, HTTPException
 import uvicorn
 import os
 from dotenv import load_dotenv
@@ -6,6 +6,8 @@ import logging
 from bot.logs import Logger
 from contextlib import asynccontextmanager
 from db.controller import MongoController
+from typing import Optional
+from web.secutils import manage_alert
 
 logging.getLogger("uvicorn.access").handlers = []
 logging.getLogger("uvicorn.error").handlers = []
@@ -47,6 +49,18 @@ async def request_logs(request: Request, call_next):
 @app.get("/")
 async def home():
   return {"Hello": "World!"}
+
+@app.get("/api/alerts/generate")
+async def call_alert(Authorization: str = Header(None), message: Optional[str] = None):
+  token = Authorization
+  if not token: 
+    raise HTTPException(
+      status_code=status.HTTP_401_UNAUTHORIZED, 
+      detail="Token no proporcionado"
+    )
+
+  await manage_alert(app.db, token, message)
+  return {"sucess": True}
 
 async def run_app(db: MongoController):
   app.db = db

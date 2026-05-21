@@ -8,6 +8,7 @@ class MongoGuild:
   icon: Optional[str] = None
   admin_role: str = "admin"
   color: int = 0
+  auth_key: str = ""
 
   def to_dict(self):
     return asdict(self)
@@ -22,3 +23,8 @@ class MongoWelcome:
 
   def to_dict(self):
     return asdict(self)
+
+@dataclass
+class MongoAlerts:
+  guild_id: int = 0
+  channel: str = ""
