@@ -5,6 +5,7 @@ from discord import Embed
 from discord.errors import CheckFailure
 from bot.dialogs import Dialogs
 from web.secutils import generate_token
+from time import time
 
 log = Logger("events.log", 3)
 diag = Dialogs()
@@ -17,6 +18,7 @@ class Events(commands.Cog, name="EventsCog"):
   async def on_ready(self):
     res = await self.bot.db.intialize_db()
     log.log("Bot Online!") if res else log.error("Base de datos no inicializada.")
+    self.bot.uptime = time()
 
   @commands.Cog.listener()
   async def on_message(self, message):

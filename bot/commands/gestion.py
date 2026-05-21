@@ -58,7 +58,7 @@ class Gestion(commands.Cog):
   @commands.command(name="uptime", help="Muestra el tiempo de actividad del bot")
   async def uptime(self, ctx):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
-      uptime = timedelta(seconds=int(round(time() - self.bot.uptime)))
+      uptime = timedelta(seconds=int(time() - self.bot.uptime))
       await ctx.send(diag.msg("uptime").format(uptime))
     else:
       await ctx.send(diag.err("NotPermitted"))

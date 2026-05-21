@@ -26,5 +26,8 @@ class MongoWelcome:
 
 @dataclass
 class MongoAlerts:
+  id: int = 0
   guild_id: int = 0
+  title: str = ""
   channel: str = ""
+  image_url: str = ""

@@ -51,7 +51,7 @@ async def home():
   return {"Hello": "World!"}
 
 @app.get("/api/alerts/generate")
-async def call_alert(Authorization: str = Header(None), message: Optional[str] = None):
+async def call_alert(Authorization: str = Header(None), id: int = 0, message: Optional[str] = None):
   token = Authorization
   if not token: 
     raise HTTPException(
@@ -59,11 +59,18 @@ async def call_alert(Authorization: str = Header(None), message: Optional[str] =
       detail="Token no proporcionado"
     )
 
-  await manage_alert(app.db, token, message)
+  if not app.bot.is_ready():
+    raise HTTPException(
+      status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+      detail="El bot no está listo para enviar alertas" 
+    )
+
+  await manage_alert(app, token, id, message)
   return {"sucess": True}
 
-async def run_app(db: MongoController):
+async def run_app(db: MongoController, bot):
   app.db = db
+  app.bot = bot
   
   config = uvicorn.Config(
     app, host="0.0.0.0", port=PORT, log_config=None

@@ -3,11 +3,12 @@ from bot.logs import Logger
 from bot.dialogs import Dialogs
 import discord
 from db.objects import MongoGuild
+import random 
 
 log = Logger("events.log", 3)
 diag = Dialogs()
 
-class General(commands.Cog, name="EventsCog"):
+class General(commands.Cog, name="GeneralCog"):
   def __init__(self, bot):
     self.bot = bot
 

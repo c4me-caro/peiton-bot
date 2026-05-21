@@ -4,7 +4,6 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from bot.logs import Logger
 from db.controller import MongoController
-from time import time
 from web.server import run_app
 import asyncio
 
@@ -14,7 +13,7 @@ log = Logger("general.log", 0)
 TOKEN = str(os.getenv("DISCORD_TOKEN"))
 PREFIX = "pe/"
 
-extensions = ["events", "gestion", "moderator"]
+extensions = ["events", "gestion", "moderator", "general"]
 
 bot = commands.Bot(
   command_prefix=PREFIX, 
@@ -28,7 +27,6 @@ bot = commands.Bot(
 
 mongocontroller = MongoController(os.getenv("MONGO_URI"), "discord")
 bot.db = mongocontroller
-bot.uptime = time()
 
 def load_bot():
   for extension in extensions:
@@ -50,7 +48,7 @@ async def main():
   load_bot()
 
   try:
-    await asyncio.gather(run_app(mongocontroller), bot.start(TOKEN))
+    await asyncio.gather(run_app(mongocontroller, bot), bot.start(TOKEN))
   
   except:
     pass
