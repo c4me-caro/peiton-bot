@@ -55,6 +55,15 @@ class Events(commands.Cog, name="EventsCog"):
     doc.pop("_id", None)
     data = MongoWelcome(**doc)
 
+    docs = await self.bot.db.get_document("servers", {"id":member.guild.id})
+    if len(docs) == 0:
+      log.warn("Servidor no encontrado")
+      return
+    
+    doc = docs[0]
+    doc.pop("_id", None)
+    serv = MongoGuild(**doc)
+
     embed = Embed(
       title=diag.msg("welcome").format(member.display_name),
       description=data.description
@@ -68,7 +77,7 @@ class Events(commands.Cog, name="EventsCog"):
       log.error("Canal de bienvenida no existe o es incorrecto")
       return
     
-    embed.color = member.color if member.guild.color == 0 else member.guild.color
+    embed.color = member.color if serv.color == 0 else serv.color
     embed.set_footer(icon_url=member.guild.icon.url if member.guild.icon != None else "", text=member.guild.name)
     
     log.log(f"{member.name} se ha unido al servidor {member.guild.name}")
