@@ -17,7 +17,7 @@
     "aboutHelpTitle": "Acerca de",
     "generalHelpText": "Prueba a usar los Slash Commands en la opción utilizar aplicaciones",
     "technicalHelpText": "Si hay algo que no entiendes pregunta a un moderador o al dueño del bot",
-    "aboutHelpText": "Si quieres conocer mas mira el repositorio oficial https://github.com/c4me-caro/peiton"
+    "aboutHelpText": "Si quieres conocer mas mira el repositorio oficial https://github.com/c4me-caro/peiton-bot"
   },
   "errors": {
     "CommandError": "Parece que ha habido un error. Por favor revisa tu comando e intenta nuevamente.",
