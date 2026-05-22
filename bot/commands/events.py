@@ -68,7 +68,7 @@ class Events(commands.Cog, name="EventsCog"):
       log.error("Canal de bienvenida no existe o es incorrecto")
       return
     
-    embed.color = member.color if data.color == 0 else data.color
+    embed.color = member.color if member.guild.color == 0 else member.guild.color
     embed.set_footer(icon_url=member.guild.icon.url if member.guild.icon != None else "", text=member.guild.name)
     
     log.log(f"{member.name} se ha unido al servidor {member.guild.name}")
