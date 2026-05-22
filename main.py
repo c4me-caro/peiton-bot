@@ -8,7 +8,7 @@ from web.server import run_app
 import asyncio
 
 load_dotenv()
-log = Logger("general.log", 0)
+log = Logger("system.log", 0)
 
 TOKEN = str(os.getenv("DISCORD_TOKEN"))
 PREFIX = "pe/"

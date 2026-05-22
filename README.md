@@ -53,3 +53,64 @@ Respuesta
 ```
 @usuario1 Se ha unido al servidor!
 ```
+## API Reference
+
+Todas las peticiones a la API deben ser realizadas utilizando en el header Authorization el raw de la `API_KEY` proporcionada al crear el servidor
+
+#### Crear un mensaje de bienvenida
+
+```http
+  POST /api/welcomes/create
+```
+
+| Parameter     | Type     | Description                       |
+| :------------ | :------- | :-------------------------------- |
+| `guild_id`    | `int`    | **Required**. Servidor a usar     |
+| `description` | `string` | **Required**. Mensaje a emitir    |
+| `image_url`   | `string` | Un gif por estetica               |
+| `channel`     | `int`    | **Required**. Canal de bienvenida |
+
+#### Crear un nuevo alert en el servidor
+
+```http
+  POST /api/alerts/create
+```
+
+| Parameter     | Type     | Description                       |
+| :------------ | :------- | :-------------------------------- |
+| `guild_id`    | `int`    | **Required**. Servidor a usar     |
+| `title`       | `string` | **Required**. Mensaje a emitir    |
+| `image_url`   | `string` | Un gif por estetica               |
+| `channel`     | `int`    | **Required**. Canal de bienvenida |
+
+#### Emitir un alert en el servidor
+
+```http
+  GET /api/alerts/generate
+```
+
+| Parameter     | Type     | Description                 |
+| :------------ | :------- | :-------------------------- |
+| `id`          | `string` | **Required**. ID del alert  |
+| `message`     | `string` | Mensaje o detalles a emitir |
+## Comandos disponibles
+
+### comandos del desarrollador
+
+- sync: actualiza el arbol de comandos
+- uptime: tiempo desde que el sistema esta funcionando
+- ping: compobar la latencia del bot
+- load: cargar una extensión del bot
+- reload: recargar una extensión del bot
+- unload: eliminar una extensión del bot
+
+### comandos de moderación
+
+- embed: generar un mensaje estilo embed
+- limpiar: borrar los mensajes del canal actualiza
+
+### comandos generales
+
+- help: obtener ayuda del bot
+- lanzar: lanza una moneda
+- avatar: muestra un avatar de un perfil

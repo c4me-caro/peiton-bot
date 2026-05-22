@@ -5,7 +5,7 @@ import discord
 from db.objects import MongoGuild
 import random 
 
-log = Logger("events.log", 3)
+log = Logger("general.log", 3)
 diag = Dialogs()
 
 class General(commands.Cog, name="GeneralCog"):
@@ -24,11 +24,13 @@ class General(commands.Cog, name="GeneralCog"):
     doc.pop("_id", None)
     data = MongoGuild(**doc)
 
-    embed = discord.Embed(title="**Helper**", color=data.color if data.color != 0 else ctx.author.color)
+    embed = discord.Embed(title=diag.hlp("helpTitle"), color=data.color if data.color != 0 else ctx.author.color)
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar)
     embed.set_footer(icon_url=data.icon if data.icon != "" else "", text=data.name)
 
-    embed.add_field(name="**Test**", value="**Prueba ok**", inline=True)
+    embed.add_field(name=diag.hlp("generalHelpTitle"), value=diag.hlp("generalHelpText"), inline=False)
+    embed.add_field(name=diag.hlp("technicalHelpTitle"), value=diag.hlp("technicalHelpText"), inline=False)
+    embed.add_field(name=diag.hlp("aboutHelpTitle"), value=diag.hlp("aboutHelpText"), inline=False)
     await ctx.respond(embed=embed)
 
   @discord.slash_command(name='avatar')

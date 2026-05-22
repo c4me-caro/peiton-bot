@@ -10,7 +10,14 @@
     "avatar": "Avatar de @{}"
   },
   "prompts": {
-    "botMention": "Hola, necesitas algo? Puedes usar `{}help` para obtener ayuda."
+    "botMention": "Hola, necesitas algo? Puedes usar `{}help` para obtener ayuda.",
+    "helpTitle": "Ayuda del bot",
+    "generalHelpTitle": "Estas perdido/a?",
+    "technicalHelpTitle": "Problemas técnicos?",
+    "aboutHelpTitle": "Acerca de",
+    "generalHelpText": "Prueba a usar los Slash Commands en la opción utilizar aplicaciones",
+    "technicalHelpText": "Si hay algo que no entiendes pregunta a un moderador o al dueño del bot",
+    "aboutHelpText": "Si quieres conocer mas mira el repositorio oficial https://github.com/c4me-caro/peiton"
   },
   "errors": {
     "CommandError": "Parece que ha habido un error. Por favor revisa tu comando e intenta nuevamente.",
