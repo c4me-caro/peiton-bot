@@ -13,6 +13,6 @@ COPY web/ ./web/
 COPY main.py .
 COPY dialogue.json .
 
-RUN mkdir log
+RUN mkdir logs
 
 CMD ["python", "main.py"]
