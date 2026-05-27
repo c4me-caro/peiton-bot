@@ -13,7 +13,7 @@ log = Logger("system.log", 0)
 TOKEN = str(os.getenv("DISCORD_TOKEN"))
 PREFIX = "pdm/"
 
-extensions = ["events", "gestion", "moderator", "general"]
+extensions = ["events", "gestion", "moderator", "general", "tchannel"]
 
 bot = commands.Bot(
   command_prefix=PREFIX, 
@@ -50,8 +50,8 @@ async def main():
   try:
     await asyncio.gather(run_app(mongocontroller, bot), bot.start(TOKEN))
   
-  except:
-    pass
+  except Exception as e:
+    print(str(e))
 
   finally:
     await stop()

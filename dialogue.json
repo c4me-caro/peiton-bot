@@ -7,7 +7,9 @@
     "UnloadExtension": "La extensión {} ha sido eliminada a las capacidades del bot.",
     "ReloadExtension": "La extensión {} ha sido recargada correctamente.",
     "clean": "Se ha borrado todo el historial del canal. (hasta {} mensajes).",
-    "avatar": "Avatar de @{}"
+    "avatar": "Avatar de @{}",
+    "createAudioRoom": "Sala privada creada: {}",
+    "createAudioRoomError": "Ya tienes una sala privada. Finaliza la sesion para iniciar una nueva"
   },
   "prompts": {
     "botMention": "Hola, necesitas algo? Puedes usar `{}help` para obtener ayuda.",
