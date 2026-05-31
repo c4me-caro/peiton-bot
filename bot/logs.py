@@ -8,8 +8,8 @@ class Logger:
     self.file = os.path.join(pathlib.Path(__file__).absolute().parent, "../logs/"+file)
     self.level = loglevel # 0 - x ; 1 - v ; 2 - vv ; 3- vvv
     
-  def log(self, message: str):
-    det = f"[+] {datetime.now()} Message: {message}"
+  def log(self, message: str, metadata="System:System"):
+    det = f"[+] {datetime.now()} {metadata} -> [Message]: {message}"
     
     if self.level > 2:
       print(det)
@@ -17,8 +17,8 @@ class Logger:
     with open(self.file, "a", encoding="utf-8") as f:
       f.write(det+"\n")
       
-  def warn(self, message: str):
-    det = f"[!] {datetime.now()} Warning: {message}"
+  def warn(self, message: str, metadata="System:System"):
+    det = f"[!] {datetime.now()} {metadata} -> [Warning]: {message}"
     
     if self.level > 1:
       print(Fore.YELLOW + det + Style.RESET_ALL)
@@ -26,8 +26,8 @@ class Logger:
     with open(self.file, "a", encoding="utf-8") as f:
       f.write(det+"\n")
       
-  def error(self, message: str):
-    det = f"[x] {datetime.now()} Error: {message}"
+  def error(self, message: str, metadata="System:System"):
+    det = f"[x] {datetime.now()} {metadata} -> [Error]: {message}"
     
     if self.level > 0:
       print(Fore.RED + det + Style.RESET_ALL)

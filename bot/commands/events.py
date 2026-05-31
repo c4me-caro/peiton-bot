@@ -3,12 +3,10 @@ from bot.logs import Logger
 from db.objects import MongoGuild, MongoWelcome
 from discord import Embed
 from discord.errors import CheckFailure
-from bot.dialogs import Dialogs
 from web.secutils import generate_token
 from time import time
 
 log = Logger("events.log", 3)
-diag = Dialogs()
 
 class Events(commands.Cog, name="EventsCog"):
   def __init__(self, bot):
@@ -26,7 +24,7 @@ class Events(commands.Cog, name="EventsCog"):
       return
 
     if self.bot.user in message.mentions and not message.content.startswith(self.bot.command_prefix):
-      await message.channel.send(diag.hlp("botMention").format(self.bot.command_prefix))
+      await message.channel.send("Hola, necesitas algo? Puedes usar `{}help` para obtener ayuda.".format(self.bot.command_prefix))
       return    
 
   @commands.Cog.listener()
@@ -48,7 +46,7 @@ class Events(commands.Cog, name="EventsCog"):
   async def on_member_join(self, member):
     docs = await self.bot.db.get_document("welcome", {"guild_id":member.guild.id})
     if len(docs) == 0:
-      log.warn("No se ha configurado un canal de bienvenida")
+      log.warn("No se ha configurado un canal de bienvenida", metadata=f"{member.name}:{member.guild.name}")
       return
     
     doc = docs[0]
@@ -57,7 +55,7 @@ class Events(commands.Cog, name="EventsCog"):
 
     docs = await self.bot.db.get_document("servers", {"id":member.guild.id})
     if len(docs) == 0:
-      log.warn("Servidor no encontrado")
+      log.warn("No se ha encontrado instancia del servidor para generar embeds", metadata=f"{member.name}:{member.guild.name}")
       return
     
     doc = docs[0]
@@ -65,7 +63,7 @@ class Events(commands.Cog, name="EventsCog"):
     serv = MongoGuild(**doc)
 
     embed = Embed(
-      title=diag.msg("welcome").format(member.display_name),
+      title="@{} Se ha unido al servidor!".format(member.display_name),
       description=data.description
     )
 
@@ -74,32 +72,32 @@ class Events(commands.Cog, name="EventsCog"):
 
     channel = self.bot.get_channel(data.channel)
     if channel == None:
-      log.error("Canal de bienvenida no existe o es incorrecto")
+      log.error("Canal de bienvenida no existe o es incorrecto", metadata=f"{member.name}:{member.guild.name}")
       return
     
     embed.color = member.color if serv.color == 0 else serv.color
     embed.set_footer(icon_url=member.guild.icon.url if member.guild.icon != None else "", text=member.guild.name)
     
-    log.log(f"{member.name} se ha unido al servidor {member.guild.name}")
+    log.log(f"{member.name} se ha unido al servidor {member.guild.name}", metadata=f"{member.name}:{member.guild.name}")
     await channel.send(embed=embed)
   
   @commands.Cog.listener()
   async def on_command_error(self, ctx, exception):
-    log.warn(exception)
-    msg = diag.err("CommandError")
+    log.warn(exception, metadata=f"{ctx.author.name}:{ctx.guild.name}")
+    msg = "Parece que ha habido un error. Por favor revisa tu comando e intenta nuevamente."
 
     if type(exception) == commands.errors.CommandNotFound:
-      msg = diag.err("CommandNotFound")
+      msg = "Parece que esta función no se encuentra en mi sistema."
 
     await ctx.send(msg)
 
   @commands.Cog.listener()
   async def on_application_command_error(self, ctx, exception):
-    log.warn(exception)
+    log.warn(exception, metadata=f"{ctx.author.name}:{ctx.guild.name}")
     if type(exception) == CheckFailure:
       return
     
-    await ctx.respond(diag.err("CommandError"))
+    await ctx.respond("Parece que ha habido un error. Por favor revisa tu comando e intenta nuevamente.")
 
 def setup(bot):
   bot.add_cog(Events(bot))

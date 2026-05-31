@@ -65,7 +65,7 @@ async def manage_alert(app, logger, token, id, message):
     )
 
   await retrieve_alert(channel, guild.name, guild.color, guild.icon, alert.title, alert.image_url, message)
-  logger.log(f"Alerta generada en el servidor {guild.name}: {alert.id}")
+  logger.log(f"Alerta generada en el servidor {guild.name}: {alert.id}", metadata="System:"+guild.name)
 
 async def validate_token(db, token, guild_id):
   guild = await get_token_guild(db, token)

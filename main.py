@@ -1,6 +1,6 @@
 import os
 import discord
-from discord.ext import commands
+from discord.ext import bridge
 from dotenv import load_dotenv
 from bot.logs import Logger
 from db.controller import MongoController
@@ -8,14 +8,14 @@ from web.server import run_app
 import asyncio
 
 load_dotenv()
-log = Logger("system.log", 0)
+log = Logger("system.log", 2)
 
 TOKEN = str(os.getenv("DISCORD_TOKEN"))
-PREFIX = "pe/"
+PREFIX = "pde/"
 
-extensions = ["events", "gestion", "moderator", "general", "tchannel.py"]
+extensions = ["events", "gestion", "moderator", "general", "tchannel"]
 
-bot = commands.Bot(
+bot = bridge.Bot(
   command_prefix=PREFIX, 
   description="bip, bop! A savage Peiton bot learning to be a smart helper.",
   activity=discord.Game(name=f"type {PREFIX}help"), 
