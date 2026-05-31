@@ -2,9 +2,7 @@ from discord.ext import commands
 from bot.logs import Logger
 from discord import Embed, slash_command
 from db.objects import MongoGuild
-from bot.dialogs import Dialogs
 
-diag = Dialogs()
 log = Logger("admin.log", 3)
 
 def is_admin():
@@ -20,7 +18,7 @@ def is_admin():
     if any(role.name in roles for role in ctx.author.roles):
       return True
     
-    msg = diag.err("NotPermitted")
+    msg = "Parece que no posees las llaves de esta habitación."
     if hasattr(ctx, "respond"):
       await ctx.respond(msg, ephemeral=True)
     else:
@@ -37,7 +35,7 @@ class Moderator(commands.Cog):
     async def get_admin_roles(self, guild_id):
       docs = await self.bot.db.get_document("servers", {"id":guild_id})
       if len(docs) == 0:
-        log.warn("No se ha configurado un rol de administración del bot.")
+        log.warn("No se ha configurado un rol de administración del bot.", metadata=f"System:{guild_id}")
         return []
       
       return docs[0]["admin_role"]
@@ -47,8 +45,8 @@ class Moderator(commands.Cog):
     async def embed(self, ctx, title, description, image=None):
         docs = await self.bot.db.get_document("servers", {"id": ctx.guild.id})
         if len(docs) == 0:
-          log.log("No se ha encontrado instancia del servidor para generar embeds")
-          await ctx.respond(diag.err("SystemError"))
+          log.log("No se ha encontrado instancia del servidor para generar embeds", metadata=f"{ctx.author.name}:{ctx.guild.name}")
+          await ctx.respond("Parece que algo ha fallado. Por favor comunica el error a un administrador.")
           return
         
         doc = docs[0]
