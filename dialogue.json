@@ -7,9 +7,7 @@
     "UnloadExtension": "La extensión {} ha sido eliminada a las capacidades del bot.",
     "ReloadExtension": "La extensión {} ha sido recargada correctamente.",
     "clean": "Se ha borrado todo el historial del canal. (hasta {} mensajes).",
-    "avatar": "Avatar de @{}",
-    "createAudioRoom": "Sala privada creada: {}",
-    "createAudioRoomError": "Ya tienes una sala privada. Finaliza la sesion para iniciar una nueva"
+    "avatar": "Avatar de @{}"
   },
   "prompts": {
     "botMention": "Hola, necesitas algo? Puedes usar `{}help` para obtener ayuda.",
@@ -26,6 +24,7 @@
     "CommandNotFound": "Me temo que esta función no se encuentra en mi sistema.",
     "NotPermitted": "Me temo que no posees las llaves de esta habitación.",
     "SystemError": "Parece que algo ha fallado. Por favor comunica el error a un administrador.",
-    "UserAvatar": "Me temo que el usuario seleccionado no posee un avatar que descargar."
+    "UserAvatar": "Me temo que el usuario seleccionado no posee un avatar que descargar.",
+    "VoiceNotAdd": "Me temo que no puedes hacer esto. Crea un canal de voz para habilitar amigos"
   }
 }

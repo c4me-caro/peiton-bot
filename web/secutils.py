@@ -57,7 +57,7 @@ async def manage_alert(app, logger, token, id, message):
       detail="Alerta no encontrada"
     )
 
-  channel = app.bot.get_channel(alert.channel) or await app.bot.fetch_channel(alert.channel)
+  channel = app.get_channel(alert.channel) or await app.fetch_channel(alert.channel)
   if not channel:
     raise HTTPException(
       status_code=status.HTTP_404_NOT_FOUND, 

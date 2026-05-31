@@ -48,7 +48,7 @@ async def main():
   load_bot()
 
   try:
-    await asyncio.gather(run_app(mongocontroller, bot), bot.start(TOKEN))
+    await asyncio.gather(run_app(bot), bot.start(TOKEN))
   
   except Exception as e:
     print(str(e))

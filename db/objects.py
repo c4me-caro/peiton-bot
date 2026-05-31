@@ -32,3 +32,11 @@ class MongoAlerts:
 
   def to_dict(self):
     return asdict(self)
+
+@dataclass
+class VoiceRooms:
+  guild_id: int = 0
+  channel: int = 0
+
+  def to_dict(self):
+    return asdict(self)

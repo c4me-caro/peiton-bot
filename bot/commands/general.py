@@ -4,6 +4,7 @@ from bot.dialogs import Dialogs
 import discord
 from db.objects import MongoGuild
 import random 
+import request
 
 log = Logger("general.log", 3)
 diag = Dialogs()
@@ -33,7 +34,7 @@ class General(commands.Cog, name="GeneralCog"):
     embed.add_field(name=diag.hlp("aboutHelpTitle"), value=diag.hlp("aboutHelpText"), inline=False)
     await ctx.respond(embed=embed)
 
-  @discord.slash_command(name='avatar')
+  @discord.slash_command(name="avatar")
   async def avatar(self, ctx, member_id):
     try:
       member_id = member_id.replace("<@", "").replace(">", "")
@@ -63,7 +64,7 @@ class General(commands.Cog, name="GeneralCog"):
       await ctx.respond("Error: {}".format(e))
       return
 
-  @discord.slash_command(name='lanzar', description='Cara o sello')
+  @discord.slash_command(name="lanzar", description="Cara o sello")
   async def lanzar(self, ctx):
     stat = random. randint(1,100) % 2
     await ctx.respond("Ha salido {}!".format("cara" if stat == 0 else "sello"))
