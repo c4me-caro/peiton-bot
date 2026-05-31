@@ -75,7 +75,7 @@ class TemporalChannels(commands.Cog, name="tchanCog"):
       creator_overwrite.move_members = True
       creator_overwrite.manage_channels = True
       creator_overwrite.administrator = True
-      new_channel = await member.guild.create_voice_channel("Sala privada #"+counter, overwrites={member.guild.default_role: everyone_overwrite, member: creator_overwrite})
+      new_channel = await member.guild.create_voice_channel("Sala privada #"+str(counter), overwrites={member.guild.default_role: everyone_overwrite, member: creator_overwrite})
       await new_channel.set_permissions(member, overwrite=creator_overwrite)
       PrivateChannels[str(member.id)] = new_channel
       log.log(f"Se ha creado la sala privada {new_channel.name}", metadata=f"{member.name}:{member.guild.name}")
