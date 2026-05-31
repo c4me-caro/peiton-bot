@@ -11,7 +11,6 @@ COPY db/ ./db/
 COPY web/ ./web/
 
 COPY main.py .
-COPY dialogue.json .
 
 RUN mkdir logs
 
