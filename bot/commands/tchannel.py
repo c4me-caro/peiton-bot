@@ -44,6 +44,7 @@ class TemporalChannels(commands.Cog, name="tchanCog"):
 
   @commands.Cog.listener()
   async def on_voice_state_update(self, member, before, after):
+    global CounterVariable
     channel = before.channel
     if channel and channel in PrivateChannels.values():
       if len(channel.members) == 0:
