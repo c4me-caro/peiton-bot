@@ -1,4 +1,4 @@
-from discord.ext import bridge
+from discord.ext import bridge, commands
 from bot.logs import Logger
 from discord import Embed, slash_command, Member
 from db.objects import MongoGuild
