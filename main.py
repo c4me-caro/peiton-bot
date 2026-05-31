@@ -11,7 +11,7 @@ load_dotenv()
 log = Logger("system.log", 0)
 
 TOKEN = str(os.getenv("DISCORD_TOKEN"))
-PREFIX = "pdm/"
+PREFIX = "pe/"
 
 extensions = ["events", "gestion", "moderator", "general", "tchannel"]
 
