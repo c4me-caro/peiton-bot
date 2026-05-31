@@ -23,8 +23,8 @@ async def lifespan(app: FastAPI):
 
   yield
 
-  if hasattr(app, "db") and hasattr(app.db, "client"):
-    app.db.client.close()
+  if hasattr(app.bot, "db") and hasattr(app.bot.db, "client"):
+    app.bot.db.client.close()
     log.log("Conexión con MongoDB cerrada correctamente.")
 
 load_dotenv()
@@ -69,13 +69,13 @@ async def create_welcome(Authorization: str = Header(None), data: Optional[Welco
     channel=data.channel
   )
 
-  _ = await app.db.add_document("welcome", doc.to_dict())
+  _ = await app.bot.db.add_document("welcome", doc.to_dict())
   return {"sucess": True}
 
 @app.post("/api/alerts/create")
 async def create_alert(Authorization: str = Header(None), alert: Optional[Alerts] = None):
   token = Authorization
-  validate_token = await validate_token(app.db, token, alert.guild_id)
+  validate_token = await validate_token(app.bot.db, token, alert.guild_id)
   if not validate_token:
     raise HTTPException(
       status_code=status.HTTP_401_UNAUTHORIZED, 
@@ -91,7 +91,7 @@ async def create_alert(Authorization: str = Header(None), alert: Optional[Alerts
     image_url=alert.image_url
   )
 
-  _ = await app.db.add_document("alerts", doc.to_dict())
+  _ = await app.bot.db.add_document("alerts", doc.to_dict())
   return {"sucess": True}
 
 @app.get("/api/alerts/generate")
@@ -109,11 +109,10 @@ async def call_alert(Authorization: str = Header(None), id: str = "", message: O
       detail="El bot no está listo para enviar alertas" 
     )
 
-  await manage_alert(app, log, token, id, message)
+  await manage_alert(app.bot, log, token, id, message)
   return {"sucess": True}
 
-async def run_app(db: MongoController, bot):
-  app.db = db
+async def run_app(bot):
   app.bot = bot
   
   config = uvicorn.Config(

@@ -24,6 +24,7 @@
     "CommandNotFound": "Me temo que esta función no se encuentra en mi sistema.",
     "NotPermitted": "Me temo que no posees las llaves de esta habitación.",
     "SystemError": "Parece que algo ha fallado. Por favor comunica el error a un administrador.",
-    "UserAvatar": "Me temo que el usuario seleccionado no posee un avatar que descargar."
+    "UserAvatar": "Me temo que el usuario seleccionado no posee un avatar que descargar.",
+    "VoiceNotAdd": "Me temo que no puedes hacer esto. Crea un canal de voz para habilitar amigos"
   }
 }
