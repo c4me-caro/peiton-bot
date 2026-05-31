@@ -13,7 +13,7 @@ log = Logger("system.log", 0)
 TOKEN = str(os.getenv("DISCORD_TOKEN"))
 PREFIX = "pe/"
 
-extensions = ["events", "gestion", "moderator", "general"]
+extensions = ["events", "gestion", "moderator", "general", "tchannel.py"]
 
 bot = commands.Bot(
   command_prefix=PREFIX, 
@@ -48,7 +48,7 @@ async def main():
   load_bot()
 
   try:
-    await asyncio.gather(run_app(mongocontroller, bot), bot.start(TOKEN))
+    await asyncio.gather(run_app(bot), bot.start(TOKEN))
   
   except:
     pass

@@ -12,7 +12,7 @@ class TemporalChannels(commands.Cog, name="tchanCog"):
   def __init__(self, bot):
     self.bot = bot
 
-  @discord.slash_command(name="habilitar")
+  @discord.slash_command(name="roomadd")
   async def add_voice_permission(self, ctx, member: discord.Member):
     if not str(ctx.author.id) in PrivateChannels.keys():
       await ctx.respond(diag.err("VoiceNotAdd"), ephemeral=True)
@@ -26,7 +26,7 @@ class TemporalChannels(commands.Cog, name="tchanCog"):
     await channel.set_permissions(member, overwrite=perm_overwrite)
     await ctx.respond("Usuario agregado al canal")
 
-  @discord.slash_command(name="eliminar")
+  @discord.slash_command(name="roomdel")
   async def delete_voice_permission(self, ctx, member: discord.Member):
     if not str(ctx.author.id) in PrivateChannels.keys():
       await ctx.respond(diag.err("VoiceNotAdd"), ephemeral=True)
