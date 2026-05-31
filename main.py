@@ -13,7 +13,7 @@ log = Logger("system.log", 0)
 TOKEN = str(os.getenv("DISCORD_TOKEN"))
 PREFIX = "pe/"
 
-extensions = ["events", "gestion", "moderator", "general", "tchannel.py"]
+extensions = ["events", "gestion", "moderator", "general", "tchannel"]
 
 bot = commands.Bot(
   command_prefix=PREFIX, 
