@@ -2,7 +2,7 @@ from discord.ext import commands
 import os
 from dotenv import load_dotenv
 from bot.logs import Logger
-import discord
+from discord import slash_command
 from time import time
 from datetime import timedelta
 
@@ -59,7 +59,7 @@ class Gestion(commands.Cog):
     uptime = timedelta(seconds=int(time() - self.bot.uptime))
     await ctx.send("El bot ha estado activo por {}.".format(uptime))
 
-  @discord.slash_command(name="load", description="Carga una extensión del bot por nombre corto")
+  @slash_command(name="load", description="Carga una extensión del bot por nombre corto")
   @is_admin()
   async def load(self, ctx, extension: str):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
@@ -69,7 +69,7 @@ class Gestion(commands.Cog):
     else:
       await ctx.respond("Parece que no posees las llaves de esta habitación.")
 
-  @discord.slash_command(name="unload", description="Inhabilita una extensión del bot por nombre corto")
+  @slash_command(name="unload", description="Inhabilita una extensión del bot por nombre corto")
   @is_admin()
   async def unload(self, ctx, extension: str):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
@@ -79,7 +79,7 @@ class Gestion(commands.Cog):
     else:
       await ctx.respond("Parece que no posees las llaves de esta habitación.")
 
-  @discord.slash_command(name="reload", description="Recarga una extensión del bot por nombre corto")
+  @slash_command(name="reload", description="Recarga una extensión del bot por nombre corto")
   @is_admin()
   async def reload(self, ctx, extension: str):
     if str(ctx.author.id) == os.getenv("DISCORD_OWNER"):
@@ -89,12 +89,12 @@ class Gestion(commands.Cog):
     else:
       await ctx.respond("Parece que no posees las llaves de esta habitación.")
 
-  @discord.slash_command(name="ping", description="Comprueba la latencia del bot.")
+  @slash_command(name="ping", description="Comprueba la latencia del bot.")
   @is_admin()
   async def ping(self, ctx):
       await ctx.respond("Pong! {0}".format(round(self.bot.latency, 1)))
        
-  @discord.slash_command(name="limpiar", help="Borrar todos los mensajes del canal")
+  @slash_command(name="limpiar", help="Borrar todos los mensajes del canal")
   @is_admin()
   async def limpiar(self, ctx, cantidad: int=1000):
     log.log(f"{ctx.author.name} ha limpiado {cantidad} mensajes del canal {ctx.channel}", metadata=f"{ctx.author.name}:{ctx.guild.name}")

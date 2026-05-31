@@ -1,6 +1,6 @@
 from discord.ext import commands
 from bot.logs import Logger
-import discord
+from discord import slash_command, Member, PermissionOverwrite
 from db.objects import VoiceRooms
 
 log = Logger("tchannels.log", 3)
@@ -11,28 +11,28 @@ class TemporalChannels(commands.Cog, name="tchanCog"):
   def __init__(self, bot):
     self.bot = bot
 
-  @discord.slash_command(name="roomadd")
-  async def add_voice_permission(self, ctx, member: discord.Member):
+  @slash_command(name="roomadd")
+  async def add_voice_permission(self, ctx, member: Member):
     if not str(ctx.author.id) in PrivateChannels.keys():
       await ctx.respond("Parece que no has iniciado ninguna sala privada.", ephemeral=True)
       return
 
     channel = PrivateChannels[str(ctx.author.id)]
-    perm_overwrite = discord.PermissionOverwrite()
+    perm_overwrite = PermissionOverwrite()
     perm_overwrite.connect = True
     perm_overwrite.view_channel = True
 
     await channel.set_permissions(member, overwrite=perm_overwrite)
     await ctx.respond("Usuario agregado al canal.")
 
-  @discord.slash_command(name="roomdel")
-  async def delete_voice_permission(self, ctx, member: discord.Member):
+  @slash_command(name="roomdel")
+  async def delete_voice_permission(self, ctx, member: Member):
     if not str(ctx.author.id) in PrivateChannels.keys():
       await ctx.respond("Parece que no has iniciado ninguna sala privada.", ephemeral=True)
       return
 
     channel = PrivateChannels[str(ctx.author.id)]
-    everyone_overwrite = discord.PermissionOverwrite()
+    everyone_overwrite = PermissionOverwrite()
     everyone_overwrite.connect = False
     everyone_overwrite.view_channel = False
 
@@ -65,11 +65,11 @@ class TemporalChannels(commands.Cog, name="tchanCog"):
     voiceroom = VoiceRooms(**doc)
 
     if voiceroom.channel == after.channel.id and not str(member.id) in PrivateChannels.keys():
-      everyone_overwrite = discord.PermissionOverwrite()
+      everyone_overwrite = PermissionOverwrite()
       everyone_overwrite.connect = False
       everyone_overwrite.view_channel = False
 
-      creator_overwrite = discord.PermissionOverwrite()
+      creator_overwrite = PermissionOverwrite()
       creator_overwrite.connect = True
       creator_overwrite.view_channel = True
       creator_overwrite.move_members = True

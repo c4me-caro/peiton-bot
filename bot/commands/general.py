@@ -1,6 +1,6 @@
-from discord.ext import commands, bridge
+from discord.ext import bridge
 from bot.logs import Logger
-import discord
+from discord import Embed, slash_command, Member
 from db.objects import MongoGuild
 import random 
 
@@ -14,8 +14,8 @@ class General(commands.Cog, name="GeneralCog"):
   async def help(self, ctx):
     await ctx.respond("Parece que este comando aún se encuentra en construcción.")
 
-  @discord.slash_command(name='avatar')
-  async def avatar(self, ctx, member: discord.Member):
+  @slash_command(name='avatar')
+  async def avatar(self, ctx, member: Member):
     if member.avatar != "":
       docs = await self.bot.db.get_document("servers", {"id": ctx.guild.id})
       if len(docs) == 0:
@@ -27,7 +27,7 @@ class General(commands.Cog, name="GeneralCog"):
       doc.pop("_id", None)
       data = MongoGuild(**doc)
       
-      embed = discord.Embed(title="Avatar de @{}".format(member.name), color=data.color if data.color != 0 else ctx.author.color)
+      embed = Embed(title="Avatar de @{}".format(member.name), color=data.color if data.color != 0 else ctx.author.color)
       embed.set_image(url=member.avatar)
       embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar)
       embed.set_footer(icon_url=data.icon if data.icon != "" else "", text=data.name)
@@ -36,7 +36,7 @@ class General(commands.Cog, name="GeneralCog"):
     else:
       await ctx.respond("Parece que el usuario seleccionado no posee un avatar que descargar.")
 
-  @discord.slash_command(name='lanzar', description='Cara o sello')
+  @slash_command(name='lanzar', description='Cara o sello')
   async def lanzar(self, ctx):
     stat = random. randint(1,100) % 2
     await ctx.respond("Ha salido {}!".format("cara" if stat == 0 else "sello"))
