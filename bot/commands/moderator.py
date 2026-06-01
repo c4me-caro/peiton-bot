@@ -66,7 +66,7 @@ class Moderator(commands.Cog):
 
     @slash_command(name="espera")
     @is_admin()
-    async def slowmode(self, ctx, segundos=10):
+    async def slowmode(self, ctx, segundos:int=10):
       if not isinstance(ctx.channel, TextChannel):
         await ctx.respond("Parece que no posees las llaves de esta habitación.", ephemeral=True)
         return
