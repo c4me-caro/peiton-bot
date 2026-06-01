@@ -1,6 +1,6 @@
 from discord.ext import commands
 from bot.logs import Logger
-from discord import Embed, slash_command
+from discord import Embed, slash_command, TextChannel
 from db.objects import MongoGuild
 
 log = Logger("admin.log", 3)
@@ -63,6 +63,24 @@ class Moderator(commands.Cog):
             embed.set_image(url=image)
 
         await ctx.respond(embed=embed)
+
+    @slash_command(name="espera")
+    @is_admin()
+    async def slowmode(self, ctx, segundos=10):
+      if not isinstance(ctx.channel, TextChannel):
+        await ctx.respond("Parece que no posees las llaves de esta habitación.", ephemeral=True)
+        return
+
+      if segundos < 0 or segundos > 21600:
+        await ctx.respond("Introduce un tiempo válido entre 0 y 21600 segundos para esta acción.", ephemeral=True)
+        return
+
+      await ctx.channel.edit(slowmode_delay=segundos)
+
+      if segundos == 0:
+        await ctx.respond("Se ha desactivado el modo lento.")
+      else:
+        await ctx.respond("Se ha activado el modo lento.")
 
 def setup(bot):
     bot.add_cog(Moderator(bot))
