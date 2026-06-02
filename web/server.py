@@ -94,6 +94,25 @@ async def create_alert(Authorization: str = Header(None), alert: Optional[Alerts
   _ = await app.bot.db.add_document("alerts", doc.to_dict())
   return {"sucess": True}
 
+@app.post("/api/alerts/delete")
+async def delete_alert(Authorization: Header(None), alert_id: str = "");
+  token = Authorization
+  validate_token = await validate_token(app.bot.db, token, alert.guild_id)
+  if not validate_token:
+    raise HTTPException(
+      status_code=status.HTTP_401_UNAUTHORIZED, 
+      detail="Token no valido"
+    )
+
+  if alert_id == "":
+    raise HTTPException(
+      status_code=status.HTTP_400_BAD_REQUEST,
+      detail="ID de la alerta no proporcionado"
+    )
+
+  _ = app.bot.db.drop_document("alerts", {"id": alert_id})
+  return {"sucess": True}
+
 @app.get("/api/alerts/generate")
 async def call_alert(Authorization: str = Header(None), id: str = "", message: Optional[str] = None):
   token = Authorization
