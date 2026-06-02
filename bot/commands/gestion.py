@@ -94,7 +94,7 @@ class Gestion(commands.Cog):
   async def ping(self, ctx):
       await ctx.respond("Pong! {0}".format(round(self.bot.latency, 1)))
        
-  @slash_command(name="limpiar", help="Borrar todos los mensajes del canal")
+  @slash_command(name="limpiar", description="Borrar todos los mensajes del canal")
   @is_admin()
   async def limpiar(self, ctx, cantidad: int=1000):
     log.log(f"{ctx.author.name} ha limpiado {cantidad} mensajes del canal {ctx.channel}", metadata=f"{ctx.author.name}:{ctx.guild.name}")

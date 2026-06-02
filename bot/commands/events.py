@@ -43,6 +43,10 @@ class Events(commands.Cog, name="EventsCog"):
     _ = await self.bot.db.add_document("servers", doc.to_dict())
 
   @commands.Cog.listener()
+  async def on_guild_remove(self, guild):
+    _ = await self.bot.db.drop_document("servers", {"id": guild.id})
+
+  @commands.Cog.listener()
   async def on_member_join(self, member):
     docs = await self.bot.db.get_document("welcome", {"guild_id":member.guild.id})
     if len(docs) == 0:
@@ -80,6 +84,10 @@ class Events(commands.Cog, name="EventsCog"):
     
     log.log(f"{member.name} se ha unido al servidor {member.guild.name}", metadata=f"{member.name}:{member.guild.name}")
     await channel.send(embed=embed)
+
+  @commands.Cog.listener()
+  async def on_member_remove(self, member):
+    log.log(f"{member.name} ha dejado el servidor.", metadata=f"{member.name}:{member.guild.name}")
   
   @commands.Cog.listener()
   async def on_command_error(self, ctx, exception):

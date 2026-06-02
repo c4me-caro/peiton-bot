@@ -40,6 +40,16 @@ class MongoController:
       log.error(str(e))
       return None
     
-  async def get_document(self, collection, filter={}):
+  async def get_document(self, collection: str, filter={}):
     cursor = self.db[collection].find(filter)
     return await cursor.to_list(length=10)
+
+  async def drop_document(self, collection: str, filter={}):
+    try:
+      result = await self.db[collection].delete_one(filter)
+      log.log(f"Documento eliminado en {collection}: {str(result)} {str(filter)}")
+      return result.deleted_count
+
+    except Exception as e:
+      log.error(str(e))
+      return 0
