@@ -11,7 +11,7 @@ class TemporalChannels(commands.Cog, name="tchanCog"):
   def __init__(self, bot):
     self.bot = bot
 
-  @slash_command(name="roomadd")
+  @slash_command(name="roomadd", description="Autoriza a un usuario a entrar a una sala privada")
   async def add_voice_permission(self, ctx, member: Member):
     if not str(ctx.author.id) in PrivateChannels.keys():
       await ctx.respond("Parece que no has iniciado ninguna sala privada.", ephemeral=True)
@@ -25,7 +25,7 @@ class TemporalChannels(commands.Cog, name="tchanCog"):
     await channel.set_permissions(member, overwrite=perm_overwrite)
     await ctx.respond("Usuario agregado al canal.")
 
-  @slash_command(name="roomdel")
+  @slash_command(name="roomdel", description="Elimina a un usuario de una sala privada")
   async def delete_voice_permission(self, ctx, member: Member):
     if not str(ctx.author.id) in PrivateChannels.keys():
       await ctx.respond("Parece que no has iniciado ninguna sala privada.", ephemeral=True)
@@ -50,7 +50,11 @@ class TemporalChannels(commands.Cog, name="tchanCog"):
       if len(channel.members) == 0:
         log.log(f"Se ha eliminado la sala privada {channel.name}", metadata=f"{member.name}:{member.guild.name}")
         await channel.delete()
-        del PrivateChannels[str(member.id)]
+        
+        for key,val in PrivateChannels.items():
+          if val == channel:
+            del PrivateChannels[str(key)]
+            break
         CounterVariable-=1
       return
 

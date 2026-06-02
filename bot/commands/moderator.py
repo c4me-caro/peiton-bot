@@ -40,7 +40,7 @@ class Moderator(commands.Cog):
       
       return docs[0]["admin_role"]
           
-    @slash_command(name="embed", description="Genera un embed con los datos requeridos")
+    @slash_command(name="embed", description="Genera un mensaje o embed en un canal de texto")
     @is_admin()
     async def embed(self, ctx, title, description, image=None):
         docs = await self.bot.db.get_document("servers", {"id": ctx.guild.id})
@@ -64,7 +64,7 @@ class Moderator(commands.Cog):
 
         await ctx.respond(embed=embed)
 
-    @slash_command(name="espera")
+    @slash_command(name="espera", description="Agrega o elimina un delay o modo lento en canales de texto")
     @is_admin()
     async def slowmode(self, ctx, segundos:int=10):
       if not isinstance(ctx.channel, TextChannel):

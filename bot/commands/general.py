@@ -10,11 +10,11 @@ class General(commands.Cog, name="GeneralCog"):
   def __init__(self, bot):
     self.bot = bot
 
-  @bridge.bridge_command(name="help")
+  @bridge.bridge_command(name="help", description="Mostrar la ayuda general del bot")
   async def help(self, ctx):
     await ctx.respond("Parece que este comando aún se encuentra en construcción.")
 
-  @slash_command(name='avatar')
+  @slash_command(name='avatar', description="Mostrar una imágen descargable del perfil de un usuario")
   async def avatar(self, ctx, member: Member):
     if member.avatar != "":
       docs = await self.bot.db.get_document("servers", {"id": ctx.guild.id})
@@ -36,7 +36,7 @@ class General(commands.Cog, name="GeneralCog"):
     else:
       await ctx.respond("Parece que el usuario seleccionado no posee un avatar que descargar.")
 
-  @slash_command(name='lanzar', description='Cara o sello')
+  @slash_command(name='lanzar', description='Lanzar una moneda para ver si sale cara o sello')
   async def lanzar(self, ctx):
     stat = random. randint(1,100) % 2
     await ctx.respond("Ha salido {}!".format("cara" if stat == 0 else "sello"))
