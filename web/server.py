@@ -95,7 +95,7 @@ async def create_alert(Authorization: str = Header(None), alert: Optional[Alerts
   return {"sucess": True}
 
 @app.post("/api/alerts/delete")
-async def delete_alert(Authorization: Header(None), alert_id: str = ""):
+async def delete_alert(Authorization: str = Header(None), alert_id: str = ""):
   token = Authorization
   validate_token = await validate_token(app.bot.db, token, alert.guild_id)
   if not validate_token:
