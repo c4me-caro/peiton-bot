@@ -55,7 +55,7 @@ async def home():
 @app.get("/api/guilds/get")
 async def get_guild(Authorization: str = Header(None), guild_id: int = 0):
   token = Authorization
-  valid = await validate_token(app.db, token, guild_id)
+  valid = await validate_token(app.bot.db, token, guild_id)
   if not valid:
     raise HTTPException(
       status_code=status.HTTP_401_UNAUTHORIZED, 
@@ -83,7 +83,7 @@ async def get_guild(Authorization: str = Header(None), guild_id: int = 0):
 @app.post("/api/welcomes/create")
 async def create_welcome(Authorization: str = Header(None), data: Optional[Welcome] = None):
   token = Authorization
-  valid = await validate_token(app.db, token, data.guild_id)
+  valid = await validate_token(app.bot.db, token, data.guild_id)
   if not valid:
     raise HTTPException(
       status_code=status.HTTP_401_UNAUTHORIZED, 
