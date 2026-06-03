@@ -9,7 +9,7 @@ from db.controller import MongoController
 from typing import Optional
 from web.secutils import manage_alert, generate_alert_id, validate_token
 from web.objects import Alerts, Welcome
-from db.objects import MongoAlerts, MongoWelcome
+from db.objects import MongoAlerts, MongoWelcome, MongoGuild
 
 logging.getLogger("uvicorn.access").handlers = []
 logging.getLogger("uvicorn.error").handlers = []
@@ -51,6 +51,34 @@ async def request_logs(request: Request, call_next):
 @app.get("/")
 async def home():
   return {"Hello": "World!"}
+
+@app.get("/api/guilds/get")
+async def get_guild(Authorization: str = Header(None), guild_id: int = 0)
+  token = Authorization
+  validate_token = await validate_token(app.db, token, guild_id)
+  if not validate_token:
+    raise HTTPException(
+      status_code=status.HTTP_401_UNAUTHORIZED, 
+      detail="Token no valido"
+    )
+
+  if guild_id == 0:
+    raise HTTPException(
+      status_code=status.HTTP_400_BAD_REQUEST,
+      detail="ID de servidor no proporcionado"
+    )
+
+  docs = await app.bot.db.get_document("servers", {"id":guild_id})
+  if len(docs) == 0:
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail="Servidor no encontrado"
+    )
+  
+  doc = docs[0]
+  doc.pop("_id", None)
+  data = MongoGuild(**doc)
+  return {"name": data.name, "icon": data.icon}
 
 @app.post("/api/welcomes/create")
 async def create_welcome(Authorization: str = Header(None), data: Optional[Welcome] = None):
@@ -95,19 +123,13 @@ async def create_alert(Authorization: str = Header(None), alert: Optional[Alerts
   return {"sucess": True}
 
 @app.post("/api/alerts/delete")
-async def delete_alert(Authorization: str = Header(None), alert_id: str = ""):
+async def delete_alert(Authorization: str = Header(None), alert: Optional[Alerts] = None):
   token = Authorization
   validate_token = await validate_token(app.bot.db, token, alert.guild_id)
   if not validate_token:
     raise HTTPException(
       status_code=status.HTTP_401_UNAUTHORIZED, 
       detail="Token no valido"
-    )
-
-  if alert_id == "":
-    raise HTTPException(
-      status_code=status.HTTP_400_BAD_REQUEST,
-      detail="ID de la alerta no proporcionado"
     )
 
   _ = app.bot.db.drop_document("alerts", {"id": alert_id})
