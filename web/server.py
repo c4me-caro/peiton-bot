@@ -53,7 +53,7 @@ async def home():
   return {"Hello": "World!"}
 
 @app.get("/api/guilds/get")
-async def get_guild(Authorization: str = Header(None), guild_id: int = 0)
+async def get_guild(Authorization: str = Header(None), guild_id: int = 0):
   token = Authorization
   validate_token = await validate_token(app.db, token, guild_id)
   if not validate_token:
